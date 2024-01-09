@@ -70,7 +70,7 @@ function pri_init(){
     $('#pri_input').fileinput({
         showPreview: false,
         showUpload: false,
-        uploadUrl: 'https://i.adigger.cn:8002/pmht/postFile_predict_pri',
+        uploadUrl: 'https://ali.adigger.cn:8002/pmht/postFile_predict_pri',
     });
     $("#pri_input").on("filebatchselected", function(event, files) {
         $("#pri_input").fileinput("upload");
@@ -103,7 +103,7 @@ function updatePriModel(pri_id){
     vueObj.modelID='';
     vueObj.method = {};
     console.log("i am going to get model: "+pri_id);
-    url = 'https://i.adigger.cn:8002/api/jobs/'+ pri_id +'?key=' + key;
+    url = 'https://ali.adigger.cn:8002/api/jobs/'+ pri_id +'?key=' + key;
     $.ajax(
         {
             type:"get",
@@ -111,7 +111,7 @@ function updatePriModel(pri_id){
             datatype:'json',
             success:function(data){
                 console.log(data);
-                url = "https://i.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + data.outputs.outID.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
+                url = "https://ali.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + data.outputs.outID.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
                 $.ajax(
                     {
                         type:"get",
@@ -485,7 +485,7 @@ $('#main').load('ts/predict.html', function(){
                         this.pri_input_val
                     ].join('|');
                 }
-                url = "https://i.adigger.cn:8002/api/tools?key=" + key;
+                url = "https://ali.adigger.cn:8002/api/tools?key=" + key;
                 data = {'history_id': history_Id, 'inputs':{ 'inf': data_inf }, 'tool_id':'aml_predict'};
                 submit_res  = JSON.parse(
                     $.ajax(
@@ -529,7 +529,7 @@ $('#main').load('ts/predict.html', function(){
                 }
                 this.jobhis = getCookie('jobhis', this.datatype.select);
                 this.jobid = jobid; 
-                url = 'https://i.adigger.cn:8002/api/jobs/'+jobid+'?key=' + key;
+                url = 'https://ali.adigger.cn:8002/api/jobs/'+jobid+'?key=' + key;
                 res = JSON.parse($.ajax({async:false,type:"get",url:url,datatype:'json',success:function(data){}}).responseText);
 
                 if(res.state == 'ok'){
@@ -548,16 +548,16 @@ $('#main').load('ts/predict.html', function(){
                         this.job_state = 'error';
                         this.job_end   = formatTimeStr(res.update_time) + ' ( ' + this.job_state  + ' )';
                         // show error
-                        var postResUrl = "https://i.adigger.cn:8002/api/datasets/" + res.outputs.postRes.id + "?key=e8c93c4c91a74db2de422efb512ddf1e";
+                        var postResUrl = "https://ali.adigger.cn:8002/api/datasets/" + res.outputs.postRes.id + "?key=e8c93c4c91a74db2de422efb512ddf1e";
                         _tmp = JSON.parse($.ajax({async:false,type:"get",url:postResUrl,datatype:'json',success:function(data){}}).responseText);
                         $('#res_svg').html("<pre>"+_tmp.misc_info+"</pre>");
                     }else{
                         this.job_end   = formatTimeStr(res.update_time) + ' ( ' + this.job_state  + ' )';
-                        var postResUrl = "https://i.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + res.outputs.postRes.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
+                        var postResUrl = "https://ali.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + res.outputs.postRes.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
                         _tmp = JSON.parse($.ajax({async:false,type:"get",url:postResUrl,datatype:'json',success:function(data){}}).responseText);
                         _tmp.columns = [jobid];
                         survivaldata = _tmp;
-                        url = "https://i.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + res.outputs.predict.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
+                        url = "https://ali.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + res.outputs.predict.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
                         res = JSON.parse($.ajax({async:false,type:"get",url:url,datatype:'json',success:function(data){}}).responseText).out;
                         this.predictTable = res;
                         this.updateHisSummary();
@@ -571,12 +571,12 @@ $('#main').load('ts/predict.html', function(){
                 this.predictTable = [];
                 tmps = [];
                 for(j in jobids.split(',')){
-                    url = 'https://i.adigger.cn:8002/api/jobs/'+ jobids.split(',')[j] +'?key=' + key;
+                    url = 'https://ali.adigger.cn:8002/api/jobs/'+ jobids.split(',')[j] +'?key=' + key;
                     res = JSON.parse($.ajax({async:false,type:"get",url:url,datatype:'json',success:function(data){}}).responseText);
-                    url = "https://i.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + res.outputs.predict.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
+                    url = "https://ali.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + res.outputs.predict.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
                     res_table = JSON.parse($.ajax({async:false,type:"get",url:url,datatype:'json',success:function(data){}}).responseText).out;
                     this.predictTable.push(res_table[0]);
-                    url = "https://i.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + res.outputs.postRes.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
+                    url = "https://ali.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + res.outputs.postRes.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
                     res = JSON.parse($.ajax({async:false,type:"get",url:url,datatype:'json',success:function(data){}}).responseText);
                     tmps.push(res);
                     jobhis = getCookie('jobhis', this.datatype.select);
@@ -635,9 +635,9 @@ $('#main').load('ts/predict.html', function(){
             updateHisSummary(){
                 for(var i in this.jobhis){
                     if(!(this.jobhis[i] in this.jobhisSum)){
-                        url = 'https://i.adigger.cn:8002/api/jobs/'+this.jobhis[i]+'?key=' + key;
+                        url = 'https://ali.adigger.cn:8002/api/jobs/'+this.jobhis[i]+'?key=' + key;
                         res = JSON.parse($.ajax({async:false,type:"get",url:url,datatype:'json',success:function(data){}}).responseText);
-                        url = "https://i.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + res.outputs.workinfo.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
+                        url = "https://ali.adigger.cn:8002/api/histories/" + history_Id + "/contents/" + res.outputs.workinfo.id + "/display?key=e8c93c4c91a74db2de422efb512ddf1e";
                         $.ajax({
                             async:false,type:"get",url:url,datatype:'json',
                             success: (data)=>{
@@ -679,7 +679,7 @@ $('#main').load('ts/predict.html', function(){
                     this.expName = input;
                     this.expLoadState = 'loading';
                     var factor_showlist = JSON.parse($.ajax({async:false,type:"get",url:"pmht/getExpSelect/default",datatype:'json',success:function(data){}}).responseText);
-                    var factor_load = JSON.parse($.ajax({async:false,type:"get",url:"https://i.adigger.cn:8002/pmht/getExpSelect/"+input,datatype:'json',success:function(data){}}).responseText);
+                    var factor_load = JSON.parse($.ajax({async:false,type:"get",url:"https://ali.adigger.cn:8002/pmht/getExpSelect/"+input,datatype:'json',success:function(data){}}).responseText);
                     for (var key in factor_showlist) {
                         this.factordef[key] = Math.round(factor_load[key]*10)/10;
                         this.factor[key]    = Math.round(factor_load[key]*10)/10;
@@ -732,7 +732,7 @@ $('#main').load('ts/predict.html', function(){
                     });
                     $('#uploadModal').off('shown.bs.modal').on('shown.bs.modal', function () {
                         $("#input-id").fileinput({
-                            uploadUrl: 'https://i.adigger.cn:8002/pmht/postFile_predict',
+                            uploadUrl: 'https://ali.adigger.cn:8002/pmht/postFile_predict',
                             showCaption: false,
                             showBrowse: false,
                             showPreview: true,
