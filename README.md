@@ -1,1 +1,1 @@
-# DAPP
+The frontend page code of the DAPP.
